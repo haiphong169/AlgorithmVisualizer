@@ -19,6 +19,7 @@ enum class SortingAlgorithm {
     InsertionSort,
     BubbleSort,
     SelectionSort,
+    QuickSort,
     None
 }
 
@@ -109,6 +110,7 @@ class MainViewModel : ViewModel() {
                 SortingAlgorithm.InsertionSort -> insertionSort()
                 SortingAlgorithm.BubbleSort -> bubbleSort()
                 SortingAlgorithm.SelectionSort -> selectionSort()
+                SortingAlgorithm.QuickSort -> quickSort(0, uiState.value.list.size - 1)
                 else -> {}
             }
         }
@@ -154,7 +156,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    //maybe turn highlight func's parameter into varargs to be able to highlight 3 items
+    //maybe turn highlight function's parameter into varargs to be able to highlight 3 items
     private suspend fun selectionSort() {
         val size = _uiState.value.list.size
         for (i in 0..size - 2) {
@@ -171,6 +173,44 @@ class MainViewModel : ViewModel() {
             swap(i, minIndex)
             delay(1500)
             removeHighlights()
+        }
+    }
+
+    private suspend fun partition(low: Int, high: Int): Int {
+        val pivot = uiState.value.list[high].value
+
+        var i = low - 1
+
+        for (j in low until high) {
+            if (uiState.value.list[j].value <= pivot) {
+                highlightItems(j, high)
+                delay(500)
+                i++
+                highlightItems(i, j)
+                swap(i, j)
+                delay(1500)
+                removeHighlights()
+            } else {
+                highlightItems(j, high)
+                delay(750)
+                removeHighlights()
+            }
+        }
+
+        highlightItems(i + 1, high)
+        swap(i + 1, high)
+        delay(1500)
+        removeHighlights()
+
+        return i + 1
+    }
+
+    private suspend fun quickSort(low: Int, high: Int) {
+        if (low < high) {
+            val pi = partition(low, high)
+
+            quickSort(low, pi - 1)
+            quickSort(pi + 1, high)
         }
     }
 }

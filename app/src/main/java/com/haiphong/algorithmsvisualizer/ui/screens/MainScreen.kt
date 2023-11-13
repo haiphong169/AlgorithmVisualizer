@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.haiphong.algorithmsvisualizer.data.model.Item
 import com.haiphong.algorithmsvisualizer.ui.composables.ListItem
+import com.haiphong.algorithmsvisualizer.ui.composables.MyButton
 import com.haiphong.algorithmsvisualizer.ui.viewmodels.MainViewModel
 import com.haiphong.algorithmsvisualizer.ui.viewmodels.SortingAlgorithm
 import kotlin.random.Random
@@ -113,23 +114,22 @@ fun MainScreen(
                 }
             }
 
-            Button(
-                onClick = {
-                    mainViewModel.sort(uiState.sortingAlgorithm)
-                },
-                enabled = uiState.sortingAlgorithm != SortingAlgorithm.None
-            ) {
-                Text(text = "Sort!")
+            MyButton(text = "Sort", enabled = uiState.sortingAlgorithm != SortingAlgorithm.None) {
+                mainViewModel.sort(uiState.sortingAlgorithm)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = { mainViewModel.resetList() }) {
-            Text(text = "Reset List!")
+        MyButton(text = "Reset List") {
+            mainViewModel.resetList()
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = { mainViewModel.shuffleList() }) {
-            Text(text = "Shuffle List!")
+        MyButton(text = "Shuffle List") {
+            mainViewModel.shuffleList()
         }
+    }
+}
+
+/*
         Row(modifier = Modifier.fillMaxWidth()) {
             TextField(
                 modifier = Modifier.weight(1f),
@@ -147,5 +147,5 @@ fun MainScreen(
                 Text(text = "Swap")
             }
         }
-    }
-}
+
+         */
